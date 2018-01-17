@@ -4,14 +4,16 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField]
     private GameObject player;
-    private float distance = 10f;
     private const float xSpeed = 250f;
     private const float ySpeed = 120f;
     private const float yMinLimit = -20f;
     private const float yMaxLimit = 80f;
     private const int zoomRate = 50;
+    private const float lerpSpeed = 0.05f;
+    private float distance = 10f;
     private float x = 0f;
     private float y = 0f;
+    private float t = 0f;
 
     private void Start()
     {
@@ -58,14 +60,36 @@ public class CameraController : MonoBehaviour {
         transform.rotation = rotation;
         transform.position = position;
 
-        SetPlayerDirection(rotation);
+        SetPlayerDirection(LerpRotation(rotation.eulerAngles.y));
     }
 
-    private void SetPlayerDirection(Quaternion rotation)
+    private float LerpRotation(float cameraRotationY)
+    {
+        float playerRotationY = player.transform.rotation.eulerAngles.y;
+
+        if (cameraRotationY != playerRotationY)
+        {
+            // Increate the t interpolater
+            t += lerpSpeed * Time.deltaTime;
+
+            playerRotationY = Mathf.LerpAngle(player.transform.rotation.eulerAngles.y, cameraRotationY, t);
+
+            if (playerRotationY == cameraRotationY)
+            {
+                t = 0f;
+            }
+        }
+
+        return playerRotationY;
+    }
+
+    private void SetPlayerDirection(float rotation)
     {
         if (!Input.GetMouseButton(0))
+        {
             // Set player rotation to define his movement direction
-            player.transform.rotation = Quaternion.Euler(player.transform.rotation.x, rotation.eulerAngles.y, player.transform.rotation.z);
+            player.transform.rotation = Quaternion.Euler(player.transform.rotation.x, rotation, player.transform.rotation.z);
+        }
     }
 
     private float ClampAngle(float angle, float min, float max)
