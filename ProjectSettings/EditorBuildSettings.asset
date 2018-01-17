@@ -4,4 +4,16 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/CameraTest.unity
+    guid: f8b8e0c4aa59cc143904d4c512b90da3
+  - enabled: 1
+    path: Assets/Scenes/PortalsTest.unity
+    guid: d81eabf71c698304495abc847871d70c
+  - enabled: 1
+    path: Assets/Scenes/ShadersTest.unity
+    guid: e21d60d91c5dfe143badd1ea92410c1d
+  - enabled: 1
+    path: Assets/Scenes/SpawningIATest.unity
+    guid: 4c801ff16900df74199ade1db97b203e
