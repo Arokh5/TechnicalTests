@@ -1,15 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    #region Public Data
+
+    #endregion
+
+    #region Private Serialized Fields
+
+    #endregion
+
+    #region Private Non-Serialized Fields
+
     private const float playerSpeed = 10f;
+
+    #endregion
+
+    #region Properties
+
+    #endregion
+
+    #region MonoBehaviour Methods
 
     private void Update()
     {
         MovePlayer();
     }
+
+    #endregion
+
+    #region Public Methods
+
+    #endregion
+
+    #region Private Methods
 
     private void MovePlayer()
     {
@@ -25,4 +49,6 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey(KeyCode.D))
             transform.Translate(Vector3.right * playerSpeed * Time.deltaTime);
     }
+
+    #endregion
 }

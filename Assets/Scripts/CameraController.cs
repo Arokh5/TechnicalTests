@@ -2,18 +2,48 @@
 
 public class CameraController : MonoBehaviour {
 
+    #region Public Data
+
+    #endregion
+
+    #region Private Serialized Fields
+
     [SerializeField]
-    private GameObject player;
+    private Transform player;
+    [SerializeField]
+    private LayerMask camOcclusion;
+
+    #endregion
+
+    #region Private Non-Serialized Fields
+
     private const float xSpeed = 250f;
     private const float ySpeed = 120f;
     private const float yMinLimit = -20f;
     private const float yMaxLimit = 80f;
     private const int zoomRate = 50;
-    private const float lerpSpeed = 0.05f;
-    private float distance = 10f;
-    private float x = 0f;
-    private float y = 0f;
-    private float t = 0f;
+    private const float lerpSpeed = 0.5f;
+
+    private float distance;
+    private float x;
+    private float y;
+    private float t;
+
+    #endregion
+
+    #region Properties
+
+    #endregion
+
+    #region MonoBehaviour Methods
+
+    private void Awake()
+    {
+        distance = 10f;
+        x = 0f;
+        y = 0f;
+        t = 0f;
+    }
 
     private void Start()
     {
@@ -26,6 +56,14 @@ public class CameraController : MonoBehaviour {
     {
         RotateCamera();
     }
+
+    #endregion
+
+    #region Public Methods
+
+    #endregion
+
+    #region Private Methods
 
     private void RotateCamera()
     {
@@ -55,7 +93,7 @@ public class CameraController : MonoBehaviour {
         }
 
         Quaternion rotation = Quaternion.Euler(y, x, 0);
-        Vector3 position = rotation * new Vector3(0.0f, 2.0f, -distance) + player.transform.position;
+        Vector3 position = rotation * new Vector3(0.0f, 2.0f, -distance) + player.position;
 
         transform.rotation = rotation;
         transform.position = position;
@@ -65,14 +103,14 @@ public class CameraController : MonoBehaviour {
 
     private float LerpRotation(float cameraRotationY)
     {
-        float playerRotationY = player.transform.rotation.eulerAngles.y;
+        float playerRotationY = player.rotation.eulerAngles.y;
 
         if (cameraRotationY != playerRotationY)
         {
             // Increate the t interpolater
             t += lerpSpeed * Time.deltaTime;
 
-            playerRotationY = Mathf.LerpAngle(player.transform.rotation.eulerAngles.y, cameraRotationY, t);
+            playerRotationY = Mathf.LerpAngle(playerRotationY, cameraRotationY, t);
 
             if (playerRotationY == cameraRotationY)
             {
@@ -88,7 +126,11 @@ public class CameraController : MonoBehaviour {
         if (!Input.GetMouseButton(0))
         {
             // Set player rotation to define his movement direction
-            player.transform.rotation = Quaternion.Euler(player.transform.rotation.x, rotation, player.transform.rotation.z);
+            player.rotation = Quaternion.Euler(player.rotation.x, rotation, player.rotation.z);
+        }
+        else
+        {
+            t = 0;
         }
     }
 
@@ -101,4 +143,6 @@ public class CameraController : MonoBehaviour {
 
         return Mathf.Clamp(angle, min, max);
     }
+
+    #endregion
 }

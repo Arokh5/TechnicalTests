@@ -3,7 +3,25 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour {
 
+    #region Public Data
+
     public static SceneManager instance;
+
+    #endregion
+
+    #region Private Serialized Fields
+
+    #endregion
+
+    #region Private Non-Serialized Fields
+
+    #endregion
+
+    #region Properties
+
+    #endregion
+
+    #region MonoBehaviour Methods
 
     private void Awake()
     {
@@ -18,10 +36,18 @@ public class SceneManager : MonoBehaviour {
         }
     }
 
-	private void Update()
+    private void Update()
     {
         ChangeScene();
     }
+
+    #endregion
+
+    #region Public Methods
+
+    #endregion
+
+    #region Private Methods
 
     private void ChangeScene()
     {
@@ -37,4 +63,6 @@ public class SceneManager : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Alpha4))
             UnityEngine.SceneManagement.SceneManager.LoadScene("ShadersTest", LoadSceneMode.Single);
     }
+
+    #endregion
 }
