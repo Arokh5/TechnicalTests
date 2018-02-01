@@ -48,4 +48,9 @@ public class AIObject {
         m_spawnRate = spawnRate;
         m_spawnAmount = spawnAmount;
     }
+
+    public GameObject GetGameObject()
+    {
+        return this.objectPrefab;
+    }
 }

@@ -241,8 +241,8 @@ MonoBehaviour:
   AIObjects:
   - m_AIGroupName: Weak Enemy
     m_prefab: {fileID: 1156971716852894, guid: b56da1fed5eb71b4e9072b48083cd60a, type: 2}
-    m_maxAI: 30
-    m_spawnRate: 1
+    m_maxAI: 14
+    m_spawnRate: 3
     m_spawnAmount: 2
     m_moveSpeed: 0
     m_enableSpawner: 1
@@ -388,13 +388,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1403676969}
-  m_LocalRotation: {x: 0.4528954, y: -0.5208839, z: 0.5460408, w: 0.4747686}
-  m_LocalPosition: {x: 8, y: 80.8, z: 72.9}
+  m_LocalRotation: {x: 0.38981852, y: -0.5044273, z: 0.3983674, w: 0.65946805}
+  m_LocalPosition: {x: 19.9, y: 108.8, z: 50.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 87.299, y: 0, z: 97.98801}
+  m_LocalEulerAnglesHint: {x: 66.354004, y: -62.179005, z: 19.237001}
 --- !u!1 &2134168570
 GameObject:
   m_ObjectHideFlags: 0

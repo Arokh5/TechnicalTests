@@ -5,6 +5,8 @@ using UnityEngine;
 public class AISpawner : MonoBehaviour {
 
     public List<Transform> waypoints = new List<Transform>();
+    public List<Transform> patrolWaypoints = new List<Transform>();
+
 
     public float spawnTimer { get { return m_spawnTimer; } }
     public Vector3 spawnArea { get { return m_spawnArea; } }
@@ -24,6 +26,8 @@ public class AISpawner : MonoBehaviour {
     // Use this for initialization
     void Start() {
         GetWaypoints();
+        GetPatrolWaypoints();
+
         CreateAIGroups();
 
         for (int i = 0; i < AIObjects.Length; i++)
@@ -48,6 +52,7 @@ public class AISpawner : MonoBehaviour {
                         tempSpawn = Instantiate(AIObjects[objectID].objectPrefab, RandomPosition(), randomRotation);
                         tempSpawn.transform.parent = tempGroup.transform;
                         tempSpawn.AddComponent<AIMove>();
+                        //tempSpawn.AddComponent<AIFlock>();
                     }
                 }
             }
@@ -93,8 +98,32 @@ public class AISpawner : MonoBehaviour {
         }
     }
 
+    public Vector3 RandomPatrolWaypoint()
+    {
+        int randomPatrolWP = Random.Range(0, (waypoints.Count - 1));
+        Vector3 randomPatrolWaypoint = patrolWaypoints[randomPatrolWP].transform.position;
+        return randomPatrolWaypoint;
+    }
+
+    void GetPatrolWaypoints()
+    {
+        Transform[] patrolWpList = transform.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < patrolWpList.Length; i++)
+        {
+            if (patrolWpList[i].tag == "patrolwaypoint")
+            {
+                patrolWaypoints.Add(patrolWpList[i]);
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected() {
         Gizmos.color = m_spawnColor;
         Gizmos.DrawCube(transform.position, spawnArea);
+    }
+
+    public List<Transform> GetObjectsPatrolWaypoints()
+    {
+        return patrolWaypoints;
     }
 }
