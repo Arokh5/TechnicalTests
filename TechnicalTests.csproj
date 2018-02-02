@@ -299,9 +299,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AIFlock.cs" />
     <Compile Include="Assets\Scripts\AIMove.cs" />
     <Compile Include="Assets\Scripts\AIObject.cs" />
     <Compile Include="Assets\Scripts\AISpawner.cs" />
+    <Compile Include="Assets\Scripts\Navigation\AgentControl.cs" />
+    <Compile Include="Assets\Scripts\Navigation\ObjectAI.cs" />
+    <Compile Include="Assets\Scripts\Navigation\Player.cs" />
+    <Compile Include="Assets\Scripts\Navigation\SpawnerAI.cs" />
+    <Compile Include="Assets\Scripts\Navigation\WaypointInfo.cs" />
     <Compile Include="Assets\Scripts\SceneManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

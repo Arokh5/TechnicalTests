@@ -2,18 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// Three different cuties AI behaviours
+public enum AIBehaviour { MARCH_STATE, PATROL_STATE, CHASING_STATE }
+
 public class AIMove : MonoBehaviour
 {
 
     private AISpawner m_AIManager;
 
-    // Three different cuties AI behaviours
-    const string MARCH_STATE = "march";
-    const string PATROL_STATE = "patrol";
-    const string CHASING_sTATE = "chase";
 
     /* patrol variables*/
-    string currentState = MARCH_STATE;
+    AIBehaviour currentState = AIBehaviour.MARCH_STATE;
     public List<Transform> patrolWaypoints = new List<Transform>();
     int currentPatrolWP = 0;
     float accuracyWP = 5.0f;
@@ -51,7 +50,7 @@ public class AIMove : MonoBehaviour
     void Update()
     {
 
-        if (currentState == MARCH_STATE)
+        if (currentState == AIBehaviour.MARCH_STATE)
         {
             if (!m_hasTarget)
             {
@@ -65,10 +64,10 @@ public class AIMove : MonoBehaviour
 
             if (Vector3.Distance(transform.position, m_waypoint) < accuracyWP)
             {
-                currentState = PATROL_STATE;
+                currentState = AIBehaviour.PATROL_STATE;
             }
         }
-        else if (currentState == PATROL_STATE)
+        else if (currentState == AIBehaviour.PATROL_STATE)
         {
             Patrol();
         }
@@ -113,7 +112,7 @@ public class AIMove : MonoBehaviour
     void Patrol()
     {
         //case for weak units
-        if (currentState == "patrol" && patrolWaypoints.Count > 0)
+        if (currentState == AIBehaviour.PATROL_STATE && patrolWaypoints.Count > 0)
         {
             if (Vector3.Distance(patrolWaypoints[currentPatrolWP].transform.position, transform.position) < accuracyWP)
             {

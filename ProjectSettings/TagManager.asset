@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - waypoint
+  - patrolwaypoint
   layers:
   - Default
   - TransparentFX
