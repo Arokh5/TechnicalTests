@@ -50,7 +50,7 @@ public class FrontCameraController : MonoBehaviour
         smoothPivotOffset = pivotOffset;
         smoothCamOffset = camOffset;
         defaultFOV = cam.GetComponent<Camera>().fieldOfView;
-        angleH = player.eulerAngles.y;
+        angleH = player.eulerAngles.y + 180f;
 
         ResetTargetOffsets();
         ResetFOV();
@@ -59,14 +59,14 @@ public class FrontCameraController : MonoBehaviour
 
     void Update()
     {
-        angleH = player.eulerAngles.y;
+        angleH = player.eulerAngles.y + 180f;
 
         // Set vertical movement limit.
         angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticalAngle);
 
         // Set camera orientation.
         Quaternion camYRotation = Quaternion.Euler(0, angleH, 0);
-        Quaternion aimRotation = Quaternion.Euler(-angleV, angleH + 180f, 0);
+        Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0);
         cam.rotation = aimRotation;
 
         // Set FOV.
