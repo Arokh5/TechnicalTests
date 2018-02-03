@@ -27,17 +27,14 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 	private float targetFOV;                                           // Target camera Field of View.
 	private float targetMaxVerticalAngle;                              // Custom camera max vertical clamp angle.
     private const float lerpSpeed = 0.5f;
-    private float t;
     private const int zoomRate = 50;
     private const int environmentLayer = 8;
 
     // Get the camera horizontal angle.
     public float GetH { get { return angleH; } }
 
-	void Awake()
+    void Awake()
 	{
-        t = 0f;
-
 		// Reference to the camera transform.
 		cam = transform;
 
@@ -55,8 +52,8 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		defaultFOV = cam.GetComponent<Camera>().fieldOfView;
 		angleH = player.eulerAngles.y;
 
-		ResetTargetOffsets ();
-		ResetFOV ();
+		ResetTargetOffsets();
+		ResetFOV();
 		ResetMaxVerticalAngle();
 	}
 
@@ -81,7 +78,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		// Set FOV.
 		cam.GetComponent<Camera>().fieldOfView = Mathf.Lerp (cam.GetComponent<Camera>().fieldOfView, targetFOV,  Time.deltaTime);
 
-        camOffset.z += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(camOffset.z);
+        //camOffset.z += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(camOffset.z);
         SetCamOffset(ref camOffset);
 
         // Test for collision with the environment based on current camera position.
@@ -102,40 +99,13 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffset, smooth * Time.deltaTime);
 
 		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
-        SetPlayerDirection(LerpRotation(cam.rotation.eulerAngles.y));
+        SetPlayerDirection();
     }
 
-    private float LerpRotation(float cameraRotationY)
+    // Set player rotation to define his movement direction
+    private void SetPlayerDirection()
     {
-        float playerRotationY = player.rotation.eulerAngles.y;
-
-        if (cameraRotationY != playerRotationY)
-        {
-            // Increate the t interpolater
-            t += lerpSpeed * Time.deltaTime;
-
-            playerRotationY = Mathf.LerpAngle(playerRotationY, cameraRotationY, t);
-
-            if (playerRotationY == cameraRotationY)
-            {
-                t = 0f;
-            }
-        }
-
-        return playerRotationY;
-    }
-
-    private void SetPlayerDirection(float rotation)
-    {
-        if (!Input.GetMouseButton(0))
-        {
-            // Set player rotation to define his movement direction
-            player.rotation = Quaternion.Euler(player.rotation.x, rotation, player.rotation.z);
-        }
-        else
-        {
-            t = 0;
-        }
+        player.rotation = Quaternion.Euler(player.rotation.x, cam.rotation.eulerAngles.y, player.rotation.z);
     }
 
     // Set camera offsets to custom values.
