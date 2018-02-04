@@ -859,7 +859,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2475,8 +2475,8 @@ MonoBehaviour:
   - m_AIGroupName: Weak
     m_prefab: {fileID: 1990814647}
     m_maxAI: 100
-    m_spawnRate: 1
-    m_spawnAmount: 5
+    m_spawnRate: 4
+    m_spawnAmount: 10
     m_enableSpawner: 1
   - m_AIGroupName: Strong
     m_prefab: {fileID: 1956503097}

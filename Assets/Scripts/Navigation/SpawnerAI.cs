@@ -19,6 +19,11 @@ public class SpawnerAI : MonoBehaviour {
 
     private Vector3 averagePosition = Vector3.zero;
 
+    private int subTeamID = 0;
+
+    private List<GameObject> spawnedElements = new List<GameObject>();
+
+
     // Use this for initialization
     void Start() {
         CreateAIGroups();
@@ -56,10 +61,16 @@ public class SpawnerAI : MonoBehaviour {
                         GameObject tempSpawn;
                         tempSpawn = Instantiate(AIObjects[objectID].objectPrefab, RandomPosition(), randomRotation);
                         tempSpawn.transform.parent = tempGroup.transform;
+
+                        tempSpawn.AddComponent<IndividualObjectAI>();
+                        tempSpawn.GetComponent<IndividualObjectAI>().setAISubTeamID(AIObjects[objectID].AIGroupName + subTeamID.ToString());
+
+                        spawnedElements.Add(tempSpawn);
                     }
+                    subTeamID++;
                 }
             }
-
+         
             yield return new WaitForSeconds(AIObjects[objectID].spawnRate);
         }
     }
@@ -87,5 +98,10 @@ public class SpawnerAI : MonoBehaviour {
     private void OnDrawGizmosSelected() {
         Gizmos.color = m_spawnColor;
         Gizmos.DrawCube(transform.position, spawnArea);
+    }
+
+    public List<GameObject> getSpawnedElements()
+    {
+        return spawnedElements;
     }
 }
