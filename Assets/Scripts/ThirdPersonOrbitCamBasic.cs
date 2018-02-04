@@ -73,7 +73,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		// Set FOV.
 		cam.GetComponent<Camera>().fieldOfView = Mathf.Lerp (cam.GetComponent<Camera>().fieldOfView, targetFOV,  Time.deltaTime);
 
-        //camOffset.z += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(camOffset.z);
+        camOffset.z += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(camOffset.z);
         SetCamOffset(ref camOffset);
 
         // Test for collision with the environment based on current camera position.
