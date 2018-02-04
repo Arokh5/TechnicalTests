@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour {
 
     #region MonoBehaviour Methods
 
-    private void Update()
+    private void FixedUpdate()
     {
         MovePlayer();
     }

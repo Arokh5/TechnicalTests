@@ -29,6 +29,7 @@ public class CameraManager : MonoBehaviour {
 
     private void Update()
     {
+        Cursor.visible = false;
         SwapCamera();
     }
 
