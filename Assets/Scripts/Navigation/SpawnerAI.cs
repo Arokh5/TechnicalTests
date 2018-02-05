@@ -2,56 +2,75 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AISpawner : MonoBehaviour {
+public class SpawnerAI : MonoBehaviour {
 
-    public List<Transform> waypoints = new List<Transform>();
+    public GameObject average;
 
-    public float spawnTimer { get { return m_spawnTimer; } }
     public Vector3 spawnArea { get { return m_spawnArea; } }
 
     [Header("Global Stats")]
-    [Range(0f, 600f)]
-    [SerializeField]
-    private float m_spawnTimer;
     [SerializeField]
     private Color m_spawnColor = new Color(1.0f, 0.0f, 0.0f, 0.3f);
     [SerializeField]
     private Vector3 m_spawnArea;
 
     [Header("AI Group Settings")]
-    public AIObject[] AIObjects = new AIObject[3];
+    public ObjectAI[] AIObjects = new ObjectAI[3];
+
+    private Vector3 averagePosition = Vector3.zero;
+
+    private int subTeamID = 0;
+
+    private List<GameObject> spawnedElements = new List<GameObject>();
+
 
     // Use this for initialization
     void Start() {
-        GetWaypoints();
         CreateAIGroups();
 
-        for (int i = 0; i < AIObjects.Length; i++)
-        {
+        for (int i = 0; i < AIObjects.Length; i++) {
             StartCoroutine(SpawnNPC(i));
         }
-       }
+    }
+
+    public Vector3 GetAveragePosition() {
+        averagePosition = Vector3.zero;
+        int count = 0;
+        for (int i = 0; i < AIObjects.Length; i++) {
+            GameObject tempGroup = GameObject.Find(AIObjects[i].AIGroupName);
+            Transform[] enemies = tempGroup.GetComponentsInChildren<Transform>();
+            for (int n = 0; n < enemies.Length; n++) {
+                averagePosition += enemies[n].position;
+                count++;
+            }
+        }
+
+        average.transform.position = averagePosition / count;
+
+        return averagePosition / count;
+    }
 
     IEnumerator SpawnNPC(int objectID) {
-        while (true)
-        {
-            if (AIObjects[objectID].enableSpawner && AIObjects[objectID].objectPrefab != null)
-            {
+        while (true) {
+            if (AIObjects[objectID].enableSpawner && AIObjects[objectID].objectPrefab != null) {
                 GameObject tempGroup = GameObject.Find(AIObjects[objectID].AIGroupName);
                 int a = tempGroup.GetComponentInChildren<Transform>().childCount;
-                if (tempGroup.GetComponentInChildren<Transform>().childCount < AIObjects[objectID].maxAI)
-                {
-                    for (int n = 0; n < AIObjects[objectID].spawnAmount; n++)
-                    {
+                if (tempGroup.GetComponentInChildren<Transform>().childCount < AIObjects[objectID].maxAI) {
+                    for (int n = 0; n < AIObjects[objectID].spawnAmount; n++) {
                         Quaternion randomRotation = Quaternion.Euler(Random.Range(-20, 20), Random.Range(0, 360), 0);
                         GameObject tempSpawn;
                         tempSpawn = Instantiate(AIObjects[objectID].objectPrefab, RandomPosition(), randomRotation);
                         tempSpawn.transform.parent = tempGroup.transform;
-                        tempSpawn.AddComponent<AIMove>();
+
+                        tempSpawn.AddComponent<IndividualObjectAI>();
+                        tempSpawn.GetComponent<IndividualObjectAI>().setAISubTeamID(AIObjects[objectID].AIGroupName + subTeamID.ToString());
+
+                        spawnedElements.Add(tempSpawn);
                     }
+                    subTeamID++;
                 }
             }
-
+         
             yield return new WaitForSeconds(AIObjects[objectID].spawnRate);
         }
     }
@@ -65,16 +84,10 @@ public class AISpawner : MonoBehaviour {
         randomPosition = transform.TransformPoint(randomPosition * 0.5f);
         return randomPosition;
     }
-
-    public Vector3 RandomWaypoint() {
-        int randomWP = Random.Range(0, (waypoints.Count - 1));
-        Vector3 randomWaypoint = waypoints[randomWP].transform.position;
-        return randomWaypoint;
-    }
+    
 
     void CreateAIGroups() {
-        for (int i = 0; i < AIObjects.Length; i++)
-        {
+        for (int i = 0; i < AIObjects.Length; i++) {
             GameObject m_AIGroupSpawn;
 
             m_AIGroupSpawn = new GameObject(AIObjects[i].AIGroupName);
@@ -82,19 +95,13 @@ public class AISpawner : MonoBehaviour {
         }
     }
 
-    void GetWaypoints() {
-        Transform[] wpList = transform.GetComponentsInChildren<Transform>();
-        for (int i = 0; i < wpList.Length; i++)
-        {
-            if (wpList[i].tag == "waypoint")
-            {
-                waypoints.Add(wpList[i]);
-            }
-        }
-    }
-
     private void OnDrawGizmosSelected() {
         Gizmos.color = m_spawnColor;
         Gizmos.DrawCube(transform.position, spawnArea);
+    }
+
+    public List<GameObject> getSpawnedElements()
+    {
+        return spawnedElements;
     }
 }
