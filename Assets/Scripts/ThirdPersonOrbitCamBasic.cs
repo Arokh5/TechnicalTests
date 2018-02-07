@@ -58,7 +58,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
 		ResetMaxVerticalAngle();
 	}
 
-	void Update()
+	private void FixedUpdate()
 	{
 		angleH += Input.GetAxis(XAxis) * 60 * horizontalAimingSpeed * Time.deltaTime;
 		angleV += Input.GetAxis(YAxis) * 60 * verticalAimingSpeed * Time.deltaTime;
