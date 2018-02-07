@@ -29,6 +29,7 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
     private const float lerpSpeed = 0.5f;
     private const int zoomRate = 50;
     private const int environmentLayer = 8;
+    private const float camPosLerpSmooth = 20f;
 
     // Get the camera horizontal angle.
     public float GetH { get { return angleH; } }
@@ -93,14 +94,19 @@ public class ThirdPersonOrbitCamBasic : MonoBehaviour
         smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, targetPivotOffset, smooth * Time.deltaTime);
 		smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffset, smooth * Time.deltaTime);
 
-		cam.position =  player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset;
         SetPlayerDirection();
+        SetCameraPosition(camYRotation, aimRotation);
     }
 
     // Set player rotation to define his movement direction
     private void SetPlayerDirection()
     {
         player.rotation = Quaternion.Euler(player.rotation.x, cam.rotation.eulerAngles.y, player.rotation.z);
+    }
+
+    private void SetCameraPosition(Quaternion camYRotation, Quaternion aimRotation)
+    {
+        cam.position = Vector3.Lerp(cam.position, player.position + camYRotation * smoothPivotOffset + aimRotation * smoothCamOffset, camPosLerpSmooth * Time.deltaTime);
     }
 
     // Set camera offsets to custom values.
